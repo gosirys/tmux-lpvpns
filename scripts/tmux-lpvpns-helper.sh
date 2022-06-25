@@ -1,17 +1,41 @@
 #!/usr/bin/env bash
 
+## LP-VPN-S
+## @osiryszzz
+
+
 vpn_status_icon=''
 lp_status_icon=''
 status_txt='[OFF]'
 
+tmux_get() {
+    local value="$(tmux show -gqv "$1")"
+    [ -n "$value" ] && echo "$value" || echo "$2"
+}
+
 _tmux_hackon() {
 
 	tf=$(tmux show-environment -g | grep -oP '(?<=current_target_file=)([^\s]+)')
-    selected_target="$(cat "$current_target_file")"
-        
+    selected_target="$(cat "$tf")"
+    session_icon="$(tmux_get '@tmux_power_session_icon' '')"
+
+    c_session=$(tmux display-message -p '#S')
+    
+
 	if [[ -n "${selected_target}" ]]; then
-		printf "  ${selected_target} "
+
+		if [[ "$selected_target" == "$c_session" ]]; then
+
+			printf " ${session_icon}  ${selected_target} "
+			#echo "0" # same target, same session
+		else
+			printf "  ${selected_target} "
+			#echo "1" # wrong session for the current selected target
+		fi
+
 	fi
+
+     #[fg=$TC,bg=$G06] $session_icon #S $LS#[fg=$G06,bg=$G05]${right_arrow_icon}   
 
 }
 
@@ -21,18 +45,16 @@ _tmux_lpvpns(){
 	lp_str='LP'
 
 	vpn_pid=$(echo "$ret" | grep -oP '(?<=vpn_pid:)([0-9]*)')
-	#vpn_pid=22
+
 	if [[ -n $vpn_pid ]]; then
 		vpn_status_icon=''
 		status_txt='[on]'
-
 	fi
-	#vpn_str+="${vpn_status_icon}"
+
 	vpn_str+="${status_txt}"
 	status_txt='[OFF]'
 
 	lp_ip=$(echo "$ret" | grep -oP '(?<=_ip:)([0-9\.]+)')
-	#lp_ip="50.201"
 	LP_range=$(tmux show-environment -g | grep -oP '(?<=LP_range=)([^\s]+)')
 
 	if [[ -n $vpn_pid ]] && [[ $lp_ip =~ $LP_range ]]; then
@@ -41,9 +63,7 @@ _tmux_lpvpns(){
 	fi
 	#lp_str+="${lp_status_icon} (${lp_ip})"
 	lp_str+="${status_txt}"
-
 	printf " ${vpn_str}  ${lp_str} "
-
 }
 
 
@@ -58,7 +78,8 @@ if [[ "$1" =~ ^hackon$|^lpvpns$ ]]; then
 	elif [[ "$1" == 'lpvpns' ]]; then
 
 		_tmux_lpvpns
-
 	fi
 fi
 
+
+## EOF
