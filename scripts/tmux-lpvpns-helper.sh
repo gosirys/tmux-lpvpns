@@ -87,7 +87,7 @@ _tmux_lpvpns(){
 		fi
 	else
 		# VPN, LP OFF
-		print_str='#[fg=$BG,bg=$TC,bold]LPVPN[]'
+		print_str='#[fg=#444444,bg=#afdab6,bold]LPVPN[]'
 	fi
 
 	# vpn_str+="${status_txt}"
