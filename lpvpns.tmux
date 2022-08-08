@@ -144,8 +144,8 @@ ret=$("$HOME/lpvpns/includes/ss-vpn-manager.sh" checkf)
 
 
 
-target_sel="#("$(_tmux_hackon)")"
-lpvpns_bar="#("$(_tmux_lpvpns)")"
+target_sel="#($(_tmux_hackon))"
+lpvpns_bar="#($(_tmux_lpvpns))"
 
 # target_sel="#($CURRENT_DIR/scripts/tmux-lpvpns-helper.sh hackon)"
 # lpvpns_bar="#($CURRENT_DIR/scripts/tmux-lpvpns-helper.sh lpvpns)"
