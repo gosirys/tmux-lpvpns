@@ -48,107 +48,107 @@ tmux_get() {
 # _tmux_hackon
 # -> 0: same target and session
 # -> 1: different session for target
-_tmux_hackon() {
+# _tmux_hackon() {
 
-	tf=$(tmux show-environment -g | grep -oP '(?<=current_target_file=)([^\s]+)')
-    selected_target="$(cat "$tf")"
-    session_icon="$(tmux_get '@tmux_power_session_icon' '')"
+# 	tf=$(tmux show-environment -g | grep -oP '(?<=current_target_file=)([^\s]+)')
+#     selected_target="$(cat "$tf")"
+#     session_icon="$(tmux_get '@tmux_power_session_icon' '')"
 
-    c_session=$(tmux display-message -p '#S')
+#     c_session=$(tmux display-message -p '#S')
     
 
-	if [[ -n "${selected_target}" ]]; then
+# 	if [[ -n "${selected_target}" ]]; then
 
-		if [[ "$selected_target" == "$c_session" ]]; then
+# 		if [[ "$selected_target" == "$c_session" ]]; then
 
-			printf " ${session_icon}  ${selected_target} "
-			#echo "0" # same target, same session
-		else
-			printf "  ${selected_target} "
-			#echo "1" # wrong session for the current selected target
-		fi
+# 			printf " ${session_icon}  ${selected_target} "
+# 			#echo "0" # same target, same session
+# 		else
+# 			printf "  ${selected_target} "
+# 			#echo "1" # wrong session for the current selected target
+# 		fi
 
-	fi
+# 	fi
 
-     #[fg=$TC,bg=$G06] $session_icon #S $LS#[fg=$G06,bg=$G05]${right_arrow_icon}   
+#      #[fg=$TC,bg=$G06] $session_icon #S $LS#[fg=$G06,bg=$G05]${right_arrow_icon}   
 
-}
-
-
-
-#_tmux_lpvpns
-# 0 -> vpn and lp ON
-# 1 -> vpn on, lp off
-# 2 -> vpn and lp off
-_tmux_lpvpns(){
-
-	# vpn_str='VPN'
-	# lp_str='LP'
-
-	# off_icon=''
-	# on_icon=''
-
-	print_str=''
-	vpn_pid=$(echo "$ret" | grep -oP '(?<=vpn_pid:)([0-9]*)')
-
-	if [[ -n $vpn_pid ]]; then
-		# vpn_status_icon=''
-		# status_txt='[on]'
-
-		lp_ip=$(echo "$ret" | grep -oP '(?<=_ip:)([0-9\.]+)')
-		LP_range=$(tmux show-environment -g | grep -oP '(?<=LP_range=)([^\s]+)')
-
-		if [[ $lp_ip =~ $LP_range ]]; then
-			# VPN and LP ON
-			# lp_status_icon=''
-			# status_txt="[on](${lp_ip})"
-
-			print_str='LPVPN[]'
-		else
-			# VPN ON, LP OFF
-			print_str='VPN[] LP[]'
-		fi
-	else
-		# VPN, LP OFF
-		print_str='LPVPN[]'
-	fi
-
-	# vpn_str+="${status_txt}"
-	# status_txt='[OFF]'
-
-	#lp_str+="${lp_status_icon} (${lp_ip})"
-	# lp_str+="${status_txt}"
-	printf " ${print_str} "
-}
+# }
 
 
 
+# #_tmux_lpvpns
+# # 0 -> vpn and lp ON
+# # 1 -> vpn on, lp off
+# # 2 -> vpn and lp off
+# _tmux_lpvpns(){
 
+# 	# vpn_str='VPN'
+# 	# lp_str='LP'
 
-ret=$("$HOME/lpvpns/includes/ss-vpn-manager.sh" checkf)
+# 	# off_icon=''
+# 	# on_icon=''
 
+# 	print_str=''
+# 	vpn_pid=$(echo "$ret" | grep -oP '(?<=vpn_pid:)([0-9]*)')
 
-# _tmux_hackon
-# -> 0: same target and session
-# -> 1: different session for target
+# 	if [[ -n $vpn_pid ]]; then
+# 		# vpn_status_icon=''
+# 		# status_txt='[on]'
 
-#_tmux_lpvpns
-# 0 -> vpn and lp ON
-# 1 -> vpn on, lp off
-# 2 -> vpn and lp off
+# 		lp_ip=$(echo "$ret" | grep -oP '(?<=_ip:)([0-9\.]+)')
+# 		LP_range=$(tmux show-environment -g | grep -oP '(?<=LP_range=)([^\s]+)')
 
-# target_sel_raw="$(_tmux_hackon)"
-# lpvpns_bar_raw="$(_tmux_lpvpns)"
+# 		if [[ $lp_ip =~ $LP_range ]]; then
+# 			# VPN and LP ON
+# 			# lp_status_icon=''
+# 			# status_txt="[on](${lp_ip})"
+
+# 			print_str='LPVPN[]'
+# 		else
+# 			# VPN ON, LP OFF
+# 			print_str='VPN[] LP[]'
+# 		fi
+# 	else
+# 		# VPN, LP OFF
+# 		print_str='LPVPN[]'
+# 	fi
+
+# 	# vpn_str+="${status_txt}"
+# 	# status_txt='[OFF]'
+
+# 	#lp_str+="${lp_status_icon} (${lp_ip})"
+# 	# lp_str+="${status_txt}"
+# 	printf " ${print_str} "
+# }
 
 
 
 
 
-target_sel="#($(_tmux_hackon))"
-lpvpns_bar="#($(_tmux_lpvpns))"
+# ret=$("$HOME/lpvpns/includes/ss-vpn-manager.sh" checkf)
 
-# target_sel="#($CURRENT_DIR/scripts/tmux-lpvpns-helper.sh hackon)"
-# lpvpns_bar="#($CURRENT_DIR/scripts/tmux-lpvpns-helper.sh lpvpns)"
+
+# # _tmux_hackon
+# # -> 0: same target and session
+# # -> 1: different session for target
+
+# #_tmux_lpvpns
+# # 0 -> vpn and lp ON
+# # 1 -> vpn on, lp off
+# # 2 -> vpn and lp off
+
+# # target_sel_raw="$(_tmux_hackon)"
+# # lpvpns_bar_raw="$(_tmux_lpvpns)"
+
+
+
+
+
+# target_sel="#($(_tmux_hackon))"
+# lpvpns_bar="#($(_tmux_lpvpns))"
+
+target_sel="#($CURRENT_DIR/scripts/tmux-lpvpns-helper.sh hackon)"
+lpvpns_bar="#($CURRENT_DIR/scripts/tmux-lpvpns-helper.sh lpvpns)"
 
 target_sel_interpolation="\#{target_sel}"
 lpvpns_bar_interpolation="\#{lpvpns_bar}"
