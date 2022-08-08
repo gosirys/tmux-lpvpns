@@ -1,7 +1,25 @@
 #!/usr/bin/env bash
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source "$CURRENT_DIR/scripts/helpers.sh"
+# source "$CURRENT_DIR/scripts/helpers.sh"
+
+get_tmux_option() {
+    local option=$1
+    local default_value=$2
+    local option_value="$(tmux show-option -gqv "$option")"
+
+    if [[ -z "$option_value" ]]; then
+        echo "$default_value"
+    else
+        echo "$option_value"
+    fi
+}
+
+set_tmux_option() {
+    local option=$1
+    local value=$2
+    tmux set-option -gq "$option" "$value"
+}
 
 target_sel="#($CURRENT_DIR/scripts/tmux-lpvpns-helper.sh hackon)"
 lpvpns_bar="#($CURRENT_DIR/scripts/tmux-lpvpns-helper.sh lpvpns)"
