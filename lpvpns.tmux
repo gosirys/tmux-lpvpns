@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source "$CURRENT_DIR/scripts/helpers.sh"
-
 
 target_sel="#($CURRENT_DIR/scripts/tmux-lpvpns-helper.sh hackon)"
 lpvpns_bar="#($CURRENT_DIR/scripts/tmux-lpvpns-helper.sh lpvpns)"
 
-
 target_sel_interpolation="\#{target_sel}"
 lpvpns_bar_interpolation="\#{lpvpns_bar}"
-
 
 do_interpolation() {
 	local input=$1

@@ -4,13 +4,31 @@
 ## @osiryszzz
 
 
-vpn_status_icon=''
-lp_status_icon=''
-status_txt='[OFF]'
+# vpn_status_icon=''
+# lp_status_icon=''
+# status_txt='[OFF]'
 
 tmux_get() {
     local value="$(tmux show -gqv "$1")"
     [ -n "$value" ] && echo "$value" || echo "$2"
+}
+
+get_tmux_option() {
+    local option=$1
+    local default_value=$2
+    local option_value="$(tmux show-option -gqv "$option")"
+
+    if [[ -z "$option_value" ]]; then
+        echo "$default_value"
+    else
+        echo "$option_value"
+    fi
+}
+
+set_tmux_option() {
+    local option=$1
+    local value=$2
+    tmux set-option -gq "$option" "$value"
 }
 
 _tmux_hackon() {
@@ -41,30 +59,72 @@ _tmux_hackon() {
 
 _tmux_lpvpns(){
 
-	vpn_str='VPN'
-	lp_str='LP'
+	# vpn_str='VPN'
+	# lp_str='LP'
 
+	# off_icon=''
+	# on_icon=''
+
+	print_str=''
 	vpn_pid=$(echo "$ret" | grep -oP '(?<=vpn_pid:)([0-9]*)')
 
 	if [[ -n $vpn_pid ]]; then
-		vpn_status_icon=''
-		status_txt='[on]'
+		# vpn_status_icon=''
+		# status_txt='[on]'
+
+		lp_ip=$(echo "$ret" | grep -oP '(?<=_ip:)([0-9\.]+)')
+		LP_range=$(tmux show-environment -g | grep -oP '(?<=LP_range=)([^\s]+)')
+
+		if [[ $lp_ip =~ $LP_range ]]; then
+			# VPN and LP ON
+			# lp_status_icon=''
+			# status_txt="[on](${lp_ip})"
+
+			print_str='LPVPN[]'
+		else
+			# VPN ON, LP OFF
+			print_str='VPN[] LP[]'
+		fi
+	else
+		# VPN, LP OFF
+		print_str='LPVPN[]'
 	fi
 
-	vpn_str+="${status_txt}"
-	status_txt='[OFF]'
+	# vpn_str+="${status_txt}"
+	# status_txt='[OFF]'
 
-	lp_ip=$(echo "$ret" | grep -oP '(?<=_ip:)([0-9\.]+)')
-	LP_range=$(tmux show-environment -g | grep -oP '(?<=LP_range=)([^\s]+)')
-
-	if [[ -n $vpn_pid ]] && [[ $lp_ip =~ $LP_range ]]; then
-		lp_status_icon=''
-		status_txt="[on](${lp_ip})"
-	fi
 	#lp_str+="${lp_status_icon} (${lp_ip})"
-	lp_str+="${status_txt}"
-	printf " ${vpn_str}  ${lp_str} "
+	# lp_str+="${status_txt}"
+	printf " ${print_str} "
 }
+
+
+# _tmux_lpvpns(){
+
+# 	vpn_str='VPN'
+# 	lp_str='LP'
+
+# 	vpn_pid=$(echo "$ret" | grep -oP '(?<=vpn_pid:)([0-9]*)')
+
+# 	if [[ -n $vpn_pid ]]; then
+# 		vpn_status_icon=''
+# 		status_txt='[on]'
+# 	fi
+
+# 	vpn_str+="${status_txt}"
+# 	status_txt='[OFF]'
+
+# 	lp_ip=$(echo "$ret" | grep -oP '(?<=_ip:)([0-9\.]+)')
+# 	LP_range=$(tmux show-environment -g | grep -oP '(?<=LP_range=)([^\s]+)')
+
+# 	if [[ -n $vpn_pid ]] && [[ $lp_ip =~ $LP_range ]]; then
+# 		lp_status_icon=''
+# 		status_txt="[on](${lp_ip})"
+# 	fi
+# 	#lp_str+="${lp_status_icon} (${lp_ip})"
+# 	lp_str+="${status_txt}"
+# 	printf " ${vpn_str} ${lp_str} "
+# }
 
 
 if [[ "$1" =~ ^hackon$|^lpvpns$ ]]; then
