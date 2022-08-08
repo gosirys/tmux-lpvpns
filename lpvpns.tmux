@@ -110,7 +110,7 @@ _tmux_lpvpns(){
 		fi
 	else
 		# VPN, LP OFF
-		print_str='#[fg=$BG,bg=$TC,bold]LPVPN[]'
+		print_str='LPVPN[]'
 	fi
 
 	# vpn_str+="${status_txt}"
@@ -137,15 +137,15 @@ ret=$("$HOME/lpvpns/includes/ss-vpn-manager.sh" checkf)
 # 1 -> vpn on, lp off
 # 2 -> vpn and lp off
 
-target_sel_raw="$(_tmux_hackon)"
-lpvpns_bar_raw="$(_tmux_lpvpns)"
+# target_sel_raw="$(_tmux_hackon)"
+# lpvpns_bar_raw="$(_tmux_lpvpns)"
 
 
 
 
 
-target_sel="#($target_sel_raw)"
-lpvpns_bar="#($lpvpns_bar_raw)"
+target_sel="#("$(_tmux_hackon)")"
+lpvpns_bar="#("$(_tmux_lpvpns)")"
 
 # target_sel="#($CURRENT_DIR/scripts/tmux-lpvpns-helper.sh hackon)"
 # lpvpns_bar="#($CURRENT_DIR/scripts/tmux-lpvpns-helper.sh lpvpns)"
