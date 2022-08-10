@@ -31,6 +31,12 @@ tmux_get() {
 #     tmux set-option -gq "$option" "$value"
 # }
 
+TC=$(tmux_get '@tmux_power_theme_custom' 'colour3')
+FG=$(tmux_get '@tmx_pwr_fg' '#afdab6')
+BG=$(tmux_get '@tmx_pwr_bg' '#444444')
+WR=$(tmux_get '@tmx_pwr_wr' '#f44336')
+HG=$(tmux_get '@tmx_pwr_hg' '#afdab6')
+
 _tmux_hackon() {
 
 	tf=$(tmux show-environment -g | grep -oP '(?<=current_target_file=)([^\s]+)')
@@ -80,14 +86,14 @@ _tmux_lpvpns(){
 			# lp_status_icon=''
 			# status_txt="[on](${lp_ip})"
 
-			print_str='LPVPN[]'
+			print_str="#[fg=$HG]LPVPN[]#[fg=$TC]"
 		else
 			# VPN ON, LP OFF
-			print_str='VPN[] LP[]'
+			print_str="#[fg=$HG]VPN[] #[fg=$WR]LP[]#[fg=$TC]"
 		fi
 	else
 		# VPN, LP OFF
-		print_str='#[fg=#444444,bg=#afdab6,bold]LPVPN[]'
+		print_str="#[fg=$WR]LPVPN[]#[fg=$TC]"
 	fi
 
 	# vpn_str+="${status_txt}"
