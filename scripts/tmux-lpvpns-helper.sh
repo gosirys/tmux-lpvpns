@@ -106,7 +106,7 @@ _tmux_lpvpns(){
 
 	#lp_str+="${lp_status_icon} (${lp_ip})"
 	# lp_str+="${status_txt}"
-	printf " ${print_str} "
+	printf "${print_str} "
 }
 
 
