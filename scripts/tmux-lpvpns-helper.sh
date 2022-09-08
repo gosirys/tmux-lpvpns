@@ -37,6 +37,9 @@ BG=$(tmux_get '@tmx_pwr_bg' '#444444')
 WR=$(tmux_get '@tmx_pwr_wr' '#f44336')
 HG=$(tmux_get '@tmx_pwr_hg' '#afdab6')
 
+r_sep_icon=''
+
+
 _tmux_hackon() {
 
 	tf=$(tmux show-environment -g | grep -oP '(?<=current_target_file=)([^\s]+)')
@@ -50,13 +53,15 @@ _tmux_hackon() {
 
 		if [[ "$selected_target" == "$c_session" ]]; then
 
-			printf " ${session_icon}  ${selected_target} "
+			printf "  ${selected_target} ${r_sep_icon}"
 			#echo "0" # same target, same session
 		else
-			printf "  ${selected_target} "
+			printf " ${session_icon} #S ?/ ${selected_target} ${r_sep_icon}"
 			#echo "1" # wrong session for the current selected target
 		fi
 
+	#else
+	#	printf " ? "
 	fi
 
      #[fg=$TC,bg=$G06] $session_icon #S $LS#[fg=$G06,bg=$G05]${right_arrow_icon}   
