@@ -53,10 +53,10 @@ _tmux_hackon() {
 
 		if [[ "$selected_target" == "$c_session" ]]; then
 
-			printf " ${selected_target} ${r_sep_icon}"
+			printf " ${selected_target} ${r_sep_icon} "
 			#echo "0" # same target, same session
 		else
-			printf "${session_icon} #S <>  ${selected_target} ${r_sep_icon}"
+			printf "${session_icon} #S <>  ${selected_target} ${r_sep_icon} "
 			#echo "1" # wrong session for the current selected target
 		fi
 
